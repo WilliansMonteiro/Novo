@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<script type="text/javascript">
+
+		var nota = prompt('Digite a nota do aluno');
+		var faltas = prompt('Digite a quantidade de faltas do aluno');
+		var media = 7;
+		if(nota>=media && faltas<5){
+			document.write('Aluno aprovado');
+
+		} else if (faltas>=5 && nota<7){
+           document.write('Aluno reprovado por falta e por nota');
+		} else if (nota<media){
+			document.write('Aluno reprovado por nota');
+		} else if(faltas>=5){
+			document.write('Aluno reprovado por faltas');
+		}
+
+	</script>
+</head>
+<body>
+
+</body>
+</html>
