@@ -1,0 +1,107 @@
+Create database clinica;
+use clinica;
+select * from consultas;
+Create table Ambulatorios(
+nroa integer primary key,
+andar numeric(3) not null,
+capacidade smallint
+);
+
+create table Medicos(
+codm integer,
+nome varchar(40) not null,
+idade smallint not null,
+especialidade char(20),
+cpf numeric(11) UNIQUE,
+cidade varchar(30),
+nroa integer,
+primary key (codm),
+foreign key (nroa) references Ambulatorios (nroa)
+);
+
+create table Funcionarios (
+codf integer primary key,
+nome varchar(40) not null,
+idade smallint,
+cpf numeric(11) unique,
+cidade varchar(30),
+salario numeric(10),
+cargo varchar(20)
+);
+
+Create table Pacientes(
+codp integer primary key,
+nome varchar(40) not null,
+idade smallint not null,
+cidade char(30),
+cpf numeric(11) unique,
+doenca varchar(40) not null
+);
+
+create table consultas (
+codm integer,
+codp integer,
+dataa date,
+hora time,
+primary key (codm,codp,dataa,hora),
+foreign key (codm) references Medicos(codm),
+foreign key (codp) references Pacientes(codp)
+
+
+);
+ALTER TABLE Funcionarios ADD nroa integer;
+ALTER TABLE Funcionarios ADD constraint fk_nroa
+FOREIGN KEY(nroa) REFERENCES Ambulatorios (nroa);
+
+
+insert into Ambulatorios (nroa,andar,capacidade) values (1,1,30);
+insert into Ambulatorios (nroa,andar,capacidade) values (2,2,30);
+insert into Ambulatorios (nroa,andar,capacidade) values (3,3,30);
+insert into Ambulatorios (nroa,andar,capacidade) values (4,4,30);
+insert into Ambulatorios (nroa,andar,capacidade) values (5,5,30);
+
+
+insert into Medicos (codm,nome,idade,especialidade,cpf,cidade,nroa) values (1,'João',40,'Ortopedia',28873645512,'florianópolis',1);
+insert into Medicos (codm,nome,idade,especialidade,cpf,cidade,nroa) values (2,'Leticia',33,'Dentista',98837645123,'Rio de Janeiro',2);
+insert into Medicos (codm,nome,idade,especialidade,cpf,cidade,nroa) values (3,'Alessandro',45,'Cardiologista',33784564212,'São Paulo',3);
+insert into Medicos (codm,nome,idade,especialidade,cpf,cidade,nroa) values (4,'Mariana',27,'Ginecologista',44599287465,'Rio de Janeiro',4);
+insert into Medicos (codm,nome,idade,especialidade,cpf,cidade,nroa) values (5,'Fernando',55,'Pediatra',58849205678,'Minas Gerais',5);
+
+INSERT into pacientes (codp,nome,idade,cidade,CPF,doenca) VALUES (1, 'Ana', 20, 'Florianopolis', 20000200000, 'gripe');
+INSERT into pacientes (codp,nome,idade,cidade,CPF,doenca) VALUES (2, 'Paulo', 24, 'Palhoca', 20000220000, 'fratura');
+INSERT into pacientes (codp,nome,idade,cidade,CPF,doenca) VALUES (3, 'Lucia', 30, 'Biguacu', 22000200000, 'tendinite');
+INSERT into pacientes (codp,nome,idade,cidade,CPF,doenca) VALUES (4, 'Carlos', 28, 'Joinville', 11000110000, 'sarampo');
+
+INSERT INTO Funcionarios (codf,nome,idade,CPF,cidade,salario,nroa,cargo) VALUES (1,'Rita',32,20000100000,'Sao Jose',1200, 2,'Secretaria');
+INSERT INTO Funcionarios (codf,nome,idade,CPF,cidade,salario,nroa,cargo) VALUES (2,'Maria',55,30000110000,'Palhoca',1220, 4, 'Contadora');
+INSERT INTO Funcionarios (codf,nome,idade,CPF,cidade,salario,nroa,cargo) VALUES (3,'Caio',45,41000100000,'Florianopolis',1100, 5,'Analista de Sistemas');
+INSERT INTO Funcionarios (codf,nome,idade,CPF,cidade,salario,nroa,cargo) VALUES (4,'Carlos',44,51000110000,'Florianopolis',1200, 3,'Secretario');
+INSERT INTO Funcionarios (codf,nome,idade,CPF,cidade,salario,nroa,cargo) VALUES (5,'Paula',33,61000111000,'Florianopolis',2500, 1,'Telefonista');
+
+INSERT INTO Consultas VALUES (1, 1, '2006/06/12', '14:00');
+INSERT INTO Consultas VALUES (1, 4, '2006/06/13', '10:00');
+INSERT INTO Consultas VALUES (2, 1, '2006/06/13', '09:00');
+INSERT INTO Consultas VALUES (2, 2, '2006/06/13', '11:00');
+INSERT INTO Consultas VALUES (2, 3, '2006/06/14', '14:00');
+INSERT INTO Consultas VALUES (2, 4, '2006/06/14', '17:00');
+INSERT INTO Consultas VALUES (3, 1, '2006/06/19', '18:00');
+INSERT INTO Consultas VALUES (3, 3, '2006/06/12', '10:00');
+INSERT INTO Consultas VALUES (3, 4, '2006/06/19', '13:00');
+INSERT INTO Consultas VALUES (4, 4, '2006/06/20', '13:00');
+INSERT INTO Consultas VALUES (4, 4, '2006/06/22', '19:30');
+select * from pacientes;
+
+UPDATE Pacientes SET cidade = 'ilhota' WHERE nome = "paulo";
+UPDATE Pacientes SET doenca = 'cancer', idade = 21 WHERE codp = 1;
+select * from consultas;
+
+UPDATE Consultas set hora = '12:00', dataa = '2006-07-04' WHERE codm =1 and codp = 4;
+UPDATE Consultas set hora = '13:30' WHERE codm = 3 and codp = 4;
+select * from funcionarios where idade <50;
+DELETE from Funcionarios WHERE codf = 4;
+
+DELETE from Pacientes Where idade <22;
+
+select COUNT(*) from Pacientes;
+
+select * from Ambulatorios as amb left join Medicos as med on (amb.nroa = med.nroa);
